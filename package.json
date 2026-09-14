@@ -1,6 +1,6 @@
 {
   "name": "obsidian-tabout-continued",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Tab out of Markdown formatting in Obsidian. A maintained fork of phibr0/obsidian-tabout.",
   "main": "main.js",
   "scripts": {

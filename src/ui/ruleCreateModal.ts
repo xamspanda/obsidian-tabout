@@ -45,6 +45,15 @@ export default class RuleCreateModal extends Modal {
                     });
             });
 
+        new Setting(contentEl)
+            .setName("Search for literal text")
+            .setDesc("Jump to the next occurrence, even outside a pair. Otherwise, recognized quotes, brackets, and Markdown marks must surround the cursor.")
+            .addToggle(toggle => {
+                toggle.setValue(this.rule.literal ?? false).onChange(value => {
+                    this.rule.literal = value;
+                });
+            });
+
         this.rule.lookups.forEach((jumpChar, idx) => {
             new Setting(contentEl)
                 .setName(idx === 0 ? "Characters" : "")

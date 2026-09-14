@@ -30,6 +30,7 @@ export class TaboutSettingsTab extends PluginSettingTab {
 		containerEl.empty();
 
 		containerEl.createEl('h2', { text: this.plugin.manifest.name });
+		containerEl.createEl('p', { text: 'Tab exits the innermost enabled pair around the cursor. Custom strings that are not closing marks are searched as literal text when no pair applies.' });
 
 		settings.rules.forEach((rule, idx) => {
 
@@ -65,7 +66,7 @@ export class TaboutSettingsTab extends PluginSettingTab {
 		descEl.append(createEl("code", { text: rule.tokenMatcher ? rule.tokenMatcher : "all" }));
 		descEl.append(" Environments and with the press of ");
 		descEl.append(createEl("kbd", { text: "Tab", cls: "tabout-kbd" }));
-		descEl.append(" you will jump to one of these characters: ");
+		descEl.append(rule.literal ? " you will search for this literal text: " : " you will exit a surrounding pair ending with these marks (other custom text is searched literally): ");
 		rule.lookups.forEach((char, i) => {
 			descEl.append(createEl("code", { text: char }));
 			if (i != rule.lookups.length - 1) {

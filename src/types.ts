@@ -6,6 +6,8 @@ export interface Rule {
     tokenMatcher: string;
     lookups: string[];
     jumpAfter: boolean;
+    /** Treat all targets as literal text instead of requiring surrounding pairs. */
+    literal?: boolean;
 }
 
 export const DEFAULT_SETTINGS: TaboutSettings = {

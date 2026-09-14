@@ -1,0 +1,512 @@
+[
+  {
+    "text": "**bold *italic* text**",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting_formatting-strong_strong"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "name": "strong"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "name": "em_formatting_formatting-em_strong"
+      },
+      {
+        "from": 8,
+        "to": 14,
+        "name": "em_strong"
+      },
+      {
+        "from": 14,
+        "to": 15,
+        "name": "em_formatting_formatting-em_strong"
+      },
+      {
+        "from": 15,
+        "to": 20,
+        "name": "strong"
+      },
+      {
+        "from": 20,
+        "to": 22,
+        "name": "formatting_formatting-strong_strong"
+      }
+    ]
+  },
+  {
+    "text": "[[hello|alias]]",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting-link_formatting-link-start"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "name": "hmd-internal-link_link-has-alias"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "name": "hmd-internal-link_link-alias-pipe"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "name": "hmd-internal-link_link-alias"
+      },
+      {
+        "from": 13,
+        "to": 15,
+        "name": "formatting-link_formatting-link-end"
+      }
+    ]
+  },
+  {
+    "text": "`literal (x) **bold**`",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "formatting_formatting-code_inline-code"
+      },
+      {
+        "from": 1,
+        "to": 21,
+        "name": "inline-code"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "name": "formatting_formatting-code_inline-code"
+      }
+    ]
+  },
+  {
+    "text": "``literal ` (x)``",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting_formatting-code_inline-code"
+      },
+      {
+        "from": 2,
+        "to": 15,
+        "name": "inline-code"
+      },
+      {
+        "from": 15,
+        "to": 17,
+        "name": "formatting_formatting-code_inline-code"
+      }
+    ]
+  },
+  {
+    "text": "==highlight==",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting_formatting-highlight_highlight"
+      },
+      {
+        "from": 2,
+        "to": 11,
+        "name": "highlight"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "name": "formatting_formatting-highlight_highlight"
+      }
+    ]
+  },
+  {
+    "text": "a*b*c and foo_bar_baz",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "Document"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "name": "em_formatting_formatting-em"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "name": "em"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "name": "em_formatting_formatting-em"
+      },
+      {
+        "from": 4,
+        "to": 21,
+        "name": "Document"
+      }
+    ]
+  },
+  {
+    "text": "~~strike~~",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting_formatting-strikethrough_strikethrough"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "name": "strikethrough"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "name": "formatting_formatting-strikethrough_strikethrough"
+      }
+    ]
+  },
+  {
+    "text": "$x+(y)$",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "formatting_formatting-math_formatting-math-begin_keyword_math"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "name": "math_variable-2"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "name": "math"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "name": "bracket_math"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "name": "math_variable-2"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "name": "bracket_math"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "name": "formatting_formatting-math_formatting-math-end_keyword_math_math-"
+      }
+    ]
+  },
+  {
+    "text": "```js\nconst x = \"(hello)\";\n```",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 5,
+        "name": "formatting_formatting-code-block_hmd-codeblock"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "name": "Document"
+      },
+      {
+        "from": 6,
+        "to": 11,
+        "name": "hmd-codeblock_keyword"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "name": "hmd-codeblock"
+      },
+      {
+        "from": 12,
+        "to": 13,
+        "name": "def_hmd-codeblock"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "name": "hmd-codeblock"
+      },
+      {
+        "from": 14,
+        "to": 15,
+        "name": "hmd-codeblock_operator"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "name": "hmd-codeblock"
+      },
+      {
+        "from": 16,
+        "to": 25,
+        "name": "hmd-codeblock_string"
+      },
+      {
+        "from": 25,
+        "to": 26,
+        "name": "hmd-codeblock"
+      },
+      {
+        "from": 26,
+        "to": 27,
+        "name": "Document"
+      },
+      {
+        "from": 27,
+        "to": 30,
+        "name": "formatting_formatting-code-block_hmd-codeblock"
+      }
+    ]
+  },
+  {
+    "text": "*em **bold** em*",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "em_formatting_formatting-em"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "name": "em"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "name": "em_formatting_formatting-strong_strong"
+      },
+      {
+        "from": 6,
+        "to": 10,
+        "name": "em_strong"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "name": "em_formatting_formatting-strong_strong"
+      },
+      {
+        "from": 12,
+        "to": 15,
+        "name": "em"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "name": "em_formatting_formatting-em"
+      }
+    ]
+  },
+  {
+    "text": "***both***",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 3,
+        "name": "em_em_formatting_formatting-strong_strong"
+      },
+      {
+        "from": 3,
+        "to": 7,
+        "name": "em_strong"
+      },
+      {
+        "from": 7,
+        "to": 10,
+        "name": "em_em_formatting_formatting-strong_strong"
+      }
+    ]
+  },
+  {
+    "text": "**bold *italic***",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 2,
+        "name": "formatting_formatting-strong_strong"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "name": "strong"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "name": "em_formatting_formatting-em_strong"
+      },
+      {
+        "from": 8,
+        "to": 14,
+        "name": "em_strong"
+      },
+      {
+        "from": 14,
+        "to": 17,
+        "name": "em_em_formatting_formatting-strong_strong"
+      }
+    ]
+  },
+  {
+    "text": "*em **bold***",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "em_formatting_formatting-em"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "name": "em"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "name": "em_formatting_formatting-strong_strong"
+      },
+      {
+        "from": 6,
+        "to": 10,
+        "name": "em_strong"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "name": "em_em_formatting_formatting-strong_strong"
+      }
+    ]
+  },
+  {
+    "text": "(text `literal )` end)",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 6,
+        "name": "Document"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "name": "formatting_formatting-code_inline-code"
+      },
+      {
+        "from": 7,
+        "to": 16,
+        "name": "inline-code"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "name": "formatting_formatting-code_inline-code"
+      },
+      {
+        "from": 17,
+        "to": 22,
+        "name": "Document"
+      }
+    ]
+  },
+  {
+    "text": "[hello](https://example.com)",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 1,
+        "name": "formatting_formatting-link_link"
+      },
+      {
+        "from": 1,
+        "to": 6,
+        "name": "link"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "name": "formatting_formatting-link_link"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "name": "formatting_formatting-link-string_string_url"
+      },
+      {
+        "from": 8,
+        "to": 27,
+        "name": "string_url"
+      },
+      {
+        "from": 27,
+        "to": 28,
+        "name": "formatting_formatting-link-string_string_url"
+      }
+    ]
+  },
+  {
+    "text": "\"say \\\"hello\\\"\"",
+    "tokens": [
+      {
+        "from": 0,
+        "to": 5,
+        "name": "Document"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "name": "formatting-escape_hmd-escape-backslash"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "name": "escape_hmd-escape-char"
+      },
+      {
+        "from": 7,
+        "to": 12,
+        "name": "Document"
+      },
+      {
+        "from": 12,
+        "to": 13,
+        "name": "formatting-escape_hmd-escape-backslash"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "name": "escape_hmd-escape-char"
+      },
+      {
+        "from": 14,
+        "to": 15,
+        "name": "Document"
+      }
+    ]
+  }
+]

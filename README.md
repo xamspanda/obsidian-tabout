@@ -1,6 +1,6 @@
 # Tabout Continued
 
-Press **Tab** to move past a closing quote, bracket, link, or Markdown delimiter.
+Press **Tab** to leave the innermost enabled quote, bracket, link, or Markdown pair.
 Rules control where a jump applies and whether the cursor stops before or after
 the target. If no rule applies, Obsidian handles Tab normally.
 
@@ -11,9 +11,17 @@ license are retained.
 
 ## What changed
 
+- Tab finds a matching pair around the cursor on the current line. It skips
+  apostrophes inside words such as `that's` and `it's`, escaped marks, and
+  unrelated pairs ahead of the cursor.
+- Nested pairs are crossed from inside to outside. Markdown formatting uses
+  Obsidian's syntax information; literal punctuation inside code spans does not
+  become a jump target. A wikilink closes past both characters in `]]`.
+- Existing rules and jump-before/after options are retained. A new
+  **Search for literal text** option enables a forward search for a custom rule.
 - Tab acts on the editor that receives the key. It no longer reads or changes
   another note through Obsidian's global active-view lookup.
-- Selected text and multiple cursors retain normal Tab behavior.
+- Selected text, multiple cursors, and composition input retain normal behavior.
 - Empty character fields and targets already reached do not consume Tab.
 - Settings events are removed when the plugin is disabled and are separate from
   the original plugin's events.
@@ -51,9 +59,40 @@ of them enabled at a time. The fork does not change the original settings file.
 2. Run **Tabout Continued: Add Rule for this Environment**.
 3. Enter the characters to jump to, then choose **Add this Rule**.
 
-Rules are evaluated in saved order. Matching uses the editor's environment name;
-an empty environment matches anywhere. Jumps stay on the current line. A rule
-with no matching target lets the following rules run.
+The innermost surrounding pair enabled by your rules wins. If several rules
+enable that pair, the first matching rule supplies the jump-before/after option.
+Matching uses the editor's environment name at the cursor or the pair;
+an empty environment matches anywhere. Jumps stay on the current line.
+
+Known quotes, brackets, Markdown marks, and backticks require a surrounding pair.
+When no enabled pair applies, other custom strings are searched literally, in
+saved rule order. Turn on **Search for literal text** to also search for known
+closing marks outside a pair. Literal search can intentionally stop at an
+apostrophe in a word.
+
+With matching rules enabled, these examples show where Tab moves the cursor
+(marked by `|`):
+
+| Before | After |
+| --- | --- |
+| `(that\|’s fine)` | `(that’s fine)\|` |
+| `(one \|(two) three)` | `(one (two) three)\|` |
+| `(“ne\|ar” later)` | `(“near”\| later)` |
+| `[[ali\|as]]` | `[[alias]]\|` |
+| `**bo\|ld**` | `**bold**\|` |
+
+Natural-language quotation can be ambiguous. The matcher skips word-internal
+apostrophes and unmatched possessives; it does not attempt to parse prose grammar.
+Pairs split across lines are outside its scope. LaTeX Suite keeps priority for
+its snippet fields and math Tab commands when both plugins are enabled.
+
+## Development checks
+
+Run `npm run check` to run the regression tests and build with TypeScript checks.
+Tests use real CodeMirror document and selection state, plus syntax fixtures
+captured from Obsidian 1.13.7. The fixture notes contain only synthetic examples.
+Also verify changes in a scratch note in Obsidian, because its syntax tokens and
+other plugins' key handlers are supplied by the host application.
 
 ## Check a missing or broken installation
 
