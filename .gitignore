@@ -4,7 +4,6 @@
 
 # npm
 node_modules
-package-lock.json
 
 # build
 main.js
@@ -12,3 +11,6 @@ main.js
 
 # obsidian
 data.json
+
+# Local packages
+dist/

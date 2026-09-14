@@ -1,23 +1,67 @@
-# Obsidian Tabout [![GitHub tag (Latest by date)](https://img.shields.io/github/v/tag/phibr0/obsidian-tabout)](https://github.com/phibr0/obsidian-tabout/releases) ![GitHub all releases](https://img.shields.io/github/downloads/phibr0/obsidian-tabout/total)
+# Tabout Continued
 
-This Plugin lets you press <kbd>Tab</kbd> to place the Cursor next to the markup you are in.
+Press **Tab** to move past a closing quote, bracket, link, or Markdown delimiter.
+Rules control where a jump applies and whether the cursor stops before or after
+the target. If no rule applies, Obsidian handles Tab normally.
 
-## How to add custom Rules
+This is a fork of [phibr0/obsidian-tabout](https://github.com/phibr0/obsidian-tabout).
+It appears in Obsidian as **Tabout Continued**, with plugin ID `tabout-continued`.
+It requires desktop Obsidian 1.13.0 or later. The original author and AGPL-3.0
+license are retained.
 
-1. Place your Cursor in the Environment you want to add the Rule for and run the Command “Add Rule for this Environment”.
-2. Enter the characters you want to jump to
-3. Click “Add this Rule”
-4. Done 🎉
+## What changed
 
-## How to install
+- Tab acts on the editor that receives the key. It no longer reads or changes
+  another note through Obsidian's global active-view lookup.
+- Selected text and multiple cursors retain normal Tab behavior.
+- Empty character fields and targets already reached do not consume Tab.
+- Settings events are removed when the plugin is disabled and are separate from
+  the original plugin's events.
+- The build uses current CodeMirror 6 types and includes regression tests.
 
-1. Go to **Community Plugins** in your [Obsidian](https://www.obsidian.md) Settings and **disable** Safe Mode
-2. Click on **Browse** and search for “Tabout“
-3. Click install
-4. Toggle the Plugin on in the **Community Plugins** Tab
+## Install from a build
 
-## Support me
+1. Run `npm ci` and `npm run check` using Node.js 22 or later.
+2. Disable the original **Tabout** plugin in Obsidian.
+3. Create `.obsidian/plugins/tabout-continued` in your vault.
+4. Copy `main.js`, `manifest.json`, and `styles.css` into that folder.
+5. Restart Obsidian and enable **Tabout Continued** in Community plugins.
 
-If you find this Plugin helpful, consider supporting me:
+The Checks workflow also provides these three files as a downloadable artifact.
+An installation requires all three files; a manifest alone cannot load the plugin.
 
-<a href="https://www.buymeacoffee.com/phibr0"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=phibr0&button_colour=5F7FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00"></a>
+## Keep your existing settings
+
+Before changing plugins, back up `.obsidian/plugins/tabout`.
+With both plugins disabled, copy its `data.json` into
+`.obsidian/plugins/tabout-continued/data.json`. All rules, their order, duplicate
+environments, lookup strings, and jump-before/after options remain intact.
+Personal settings are not included in this repository or build artifacts.
+
+If you assigned a hotkey to **Add Rule for this Environment**, assign the same
+hotkey to that command under **Tabout Continued**. The normal Tab key is supplied
+by the editor extension and needs no custom hotkey.
+
+To switch back, disable **Tabout Continued** and enable **Tabout**. Keep only one
+of them enabled at a time. The fork does not change the original settings file.
+
+## Add a custom rule
+
+1. Place the cursor inside the formatting where you want to use Tab.
+2. Run **Tabout Continued: Add Rule for this Environment**.
+3. Enter the characters to jump to, then choose **Add this Rule**.
+
+Rules are evaluated in saved order. Matching uses the editor's environment name;
+an empty environment matches anywhere. Jumps stay on the current line. A rule
+with no matching target lets the following rules run.
+
+## Check a missing or broken installation
+
+A console error such as `ENOENT` for `plugins/tabout/main.js` means the plugin's
+code file is missing. Restore a complete build while preserving `data.json`.
+That error alone does not identify what removed the file.
+
+Open Obsidian's developer tools to inspect load errors. For functional checks,
+use a scratch note and test `(hello|)` and `**hello|**`, where `|` marks the cursor.
+Pressing Tab should move the cursor beyond the closing delimiter without editing
+the text. Normal indentation should still work when no rule applies.

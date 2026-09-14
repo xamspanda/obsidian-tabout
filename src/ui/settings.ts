@@ -11,12 +11,12 @@ export class TaboutSettingsTab extends PluginSettingTab {
 		super(app, plugin);
 		this.plugin = plugin;
 
-		addEventListener("tabout-edit-complete", async (e: CustomEvent) => {
+		plugin.registerDomEvent(window, "tabout-continued:edit-complete", async (e: CustomEvent) => {
 			this.plugin.settings.rules[e.detail.idx] = e.detail.rule;
 			this.display();
 			await this.plugin.saveSettings();
 		});
-		addEventListener("tabout-rule-create", async (e: CustomEvent) => {
+		plugin.registerDomEvent(window, "tabout-continued:rule-create", async (e: CustomEvent) => {
 			this.plugin.settings.rules.push(e.detail.rule);
 			this.display();
 			await this.plugin.saveSettings();
@@ -29,7 +29,7 @@ export class TaboutSettingsTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl('h2', { text: 'Obsidian Tabout' });
+		containerEl.createEl('h2', { text: this.plugin.manifest.name });
 
 		settings.rules.forEach((rule, idx) => {
 

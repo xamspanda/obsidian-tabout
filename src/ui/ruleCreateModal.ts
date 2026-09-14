@@ -99,6 +99,6 @@ export default class RuleCreateModal extends Modal {
     }
 
     save() {
-        dispatchEvent(new CustomEvent("tabout-rule-create", { detail: { rule: this.rule } }));
+        dispatchEvent(new CustomEvent("tabout-continued:rule-create", { detail: { rule: this.rule } }));
     }
 }

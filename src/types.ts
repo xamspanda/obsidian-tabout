@@ -82,3 +82,10 @@ export const DEFAULT_SETTINGS: TaboutSettings = {
         }        
     ],
 }
+
+declare global {
+    interface WindowEventMap {
+        "tabout-continued:edit-complete": CustomEvent<{ rule: Rule; idx: number }>;
+        "tabout-continued:rule-create": CustomEvent<{ rule: Rule }>;
+    }
+}

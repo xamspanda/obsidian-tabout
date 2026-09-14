@@ -1,120 +1,73 @@
-import * as CodeMirror from "codemirror";
-import { Editor, MarkdownView, Plugin } from "obsidian";
+import { Editor, Plugin } from "obsidian";
 import { TaboutSettingsTab } from "./ui/settings";
 import { TaboutSettings, DEFAULT_SETTINGS } from "./types";
 import RuleCreateModal from "./ui/ruleCreateModal";
-import { keymap } from "@codemirror/view";
-import { EditorState, Extension, Prec } from "@codemirror/state";
+import { EditorView, keymap } from "@codemirror/view";
+import { EditorState, Prec } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 
 export default class TaboutPlugin extends Plugin {
-  settings: TaboutSettings;
-  legacy: boolean;
+  declare settings: TaboutSettings;
 
   async onload() {
     await this.loadSettings();
-
-    //@ts-expect-error `config` isn't available in the type defs
-    this.legacy = this.app.vault.config.legacyEditor;
-    if (this.legacy) {
-      //Use the legacy tabout for CodeMirror 5
-      this.registerCodeMirror((cm: CodeMirror.Editor) => {
-        cm.on("beforeChange", this.legacyTabout);
-      });
-    } else {
-      //Use a proper Editor Extension for CodeMirror 6
-      this.registerEditorExtension(
-        Prec.high(
-          keymap.of([
-            {
-              key: "Tab",
-              run: (eView) => this.tabout(this.getToken(eView.state)),
-            },
-          ])
-        )
-      );
-    }
-
+    this.registerEditorExtension(
+      Prec.high(keymap.of([{ key: "Tab", run: (view) => this.tabout(view) }]))
+    );
     this.addSettingTab(new TaboutSettingsTab(this.app, this));
-
     this.addCommand({
       id: "tabout-add-rule-here",
       name: "Add Rule for this Environment",
       editorCallback: (editor: Editor) => {
-        let token = "";
-        if (this.legacy) {
-          //@ts-expect-error cm is not defined in the type docs
-          token = editor.cm.getTokenTypeAt(editor.getCursor());
-        } else {
-          //@ts-expect-error cm is not defined in the type docs
-          token = this.getToken(editor.cm.state);
-        }
-        new RuleCreateModal(
-          this,
-          token
-        ).open();
+        // Obsidian's CodeMirror view is not included in its Editor type.
+        const view = (editor as Editor & { cm: EditorView }).cm;
+        new RuleCreateModal(this, this.getToken(view.state)).open();
       },
     });
   }
 
-  getToken = (state: EditorState) => {
-    const ast = syntaxTree(state);
-    return ast.resolveInner(state.selection.main.head, -1).type
-      .name as string;
-  }
+  getToken = (state: EditorState): string => {
+    return syntaxTree(state).resolveInner(state.selection.main.head, -1).type.name;
+  };
 
-  tabout = (token: string): boolean => {
-    for (let rule of this.settings.rules) {
-      if (token.contains(rule.tokenMatcher)) {
-        const editor =
-          this.app.workspace.getActiveViewOfType(MarkdownView).editor;
-        // Get Cursor Position
-        const pos = editor.getCursor();
-        // Get content of Line after Cursor
-        const afterCursor = editor.getLine(pos.line).substring(pos.ch);
-        // Determine the nearest character
-        const nextChar = Math.min(
-          ...this.getIndices(rule.lookups, afterCursor, rule.jumpAfter)
-        );
-        // If there is a nearest one jump right after it
-        if (nextChar != Infinity) {
-          editor.setCursor(pos.line, pos.ch + nextChar);
-          return true;
-        }
+  tabout = (view: EditorView): boolean => {
+    const { state } = view;
+    // Leave selected text and multiple cursors to normal indentation.
+    if (state.selection.ranges.length !== 1 || !state.selection.main.empty) {
+      return false;
+    }
+    const token = this.getToken(state);
+    const pos = state.selection.main.head;
+    const line = state.doc.lineAt(pos);
+    const afterCursor = line.text.substring(pos - line.from);
+    for (const rule of this.settings.rules) {
+      if (!token.includes(rule.tokenMatcher)) continue;
+      const distance = Math.min(
+        ...this.getIndices(rule.lookups, afterCursor, rule.jumpAfter)
+      );
+      if (distance !== Infinity) {
+        view.dispatch({ selection: { anchor: pos + distance }, scrollIntoView: true });
+        return true;
       }
     }
     return false;
-  }
-
-  legacyTabout = (cm: CodeMirror.Editor, changeObj: CodeMirror.EditorChange) => {
-    if (changeObj.text.first() === "	") {
-      const token = cm.getTokenTypeAt(cm.getCursor());
-      //@ts-expect-error
-      if (this.tabout(token)) changeObj.cancel();
-    }
   };
 
-  getIndices(rules: string[], afterCursor: string, jumpAfter: boolean) {
-    let n: number[] = [];
-    rules.forEach((r) => {
-      let idx = afterCursor.indexOf(r);
-      if (idx != -1) {
-        n.push(jumpAfter ? idx + r.length : idx);
-      }
-    });
-    return n;
-  }
-
-  onunload() {
-    if (this.legacy) {
-      this.app.workspace.iterateCodeMirrors((cm) =>
-        cm.off("beforeChange", this.legacyTabout)
-      );
+  getIndices(lookups: string[], afterCursor: string, jumpAfter: boolean): number[] {
+    const distances: number[] = [];
+    for (const lookup of lookups) {
+      // Empty fields and targets already reached must not swallow Tab.
+      if (!lookup) continue;
+      const index = afterCursor.indexOf(lookup);
+      if (index === -1) continue;
+      const distance = jumpAfter ? index + lookup.length : index;
+      if (distance > 0) distances.push(distance);
     }
+    return distances;
   }
 
   async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    this.settings = Object.assign(structuredClone(DEFAULT_SETTINGS), await this.loadData());
   }
 
   async saveSettings() {

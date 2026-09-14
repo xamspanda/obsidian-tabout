@@ -86,6 +86,6 @@ export default class RuleEditModal extends Modal {
 	onClose() {
 		let { contentEl } = this;
 		contentEl.empty();
-		dispatchEvent(new CustomEvent("tabout-edit-complete", { detail: { rule: this.rule, idx: this.idx } }));
+		dispatchEvent(new CustomEvent("tabout-continued:edit-complete", { detail: { rule: this.rule, idx: this.idx } }));
 	}
 }
